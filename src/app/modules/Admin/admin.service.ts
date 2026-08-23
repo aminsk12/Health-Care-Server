@@ -2,8 +2,15 @@ import { prisma } from "../../../lib/prisma"
 
 
 
-const getAllAdmins = async () => {
-  const admins = await prisma.admin.findMany()
+const getAllAdmins = async (params: any) => {
+  const admins = await prisma.admin.findMany({
+    where: {
+      name: {
+        contains: params.searchTerm,
+        mode: "insensitive"
+      }
+    },
+  })
   return admins;
 }
 
