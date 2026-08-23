@@ -1,9 +1,8 @@
 import express, { type Request, type Response } from 'express'
+import { userController } from './user.controller';
 
 const router = express.Router()
 
-router.get("/", (req:Request, res:Response) => {
-  res.send("User route is working!");
-});
+router.post("/create-admin", userController.createAdmin);
 
 export const userRouter = router;
