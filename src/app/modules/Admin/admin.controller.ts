@@ -45,7 +45,50 @@ const getAdminById = async (req: Request, res: Response) => {
   }
 };
 
+
+const updateAdminData = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const data = req.body;
+
+  try {
+    const result = await adminService.updateAdminData(id as string, data);
+    res.status(200).json({
+      success: true,
+      message: "Admin data updated successfully",
+      data: result,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update admin data",
+      error: (err as Error).message,
+    });
+  }
+};
+
+const deleteAdminById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  
+  try {
+    const admin = await adminService.deleteAdminById(id as string);
+    res.status(200).json({
+      success: true,
+      message: "Admin deleted successfully",
+      data: admin,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete admin",
+      error: (err as Error).message,
+    });
+  }
+};
+
 export const adminController = {
   getAllAdmins,
   getAdminById,
+  updateAdminData,
+  deleteAdminById
 };
+
