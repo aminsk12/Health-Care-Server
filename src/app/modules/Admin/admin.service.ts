@@ -7,6 +7,7 @@ const getAllAdmins = async (params: any) => {
         contains: params.searchTerm,
         mode: "insensitive",
       },
+      isdeleted: false,
     },
   });
   return admins;
@@ -14,14 +15,21 @@ const getAllAdmins = async (params: any) => {
 
 const getAdminById = async (id: string) => {
   const admin = await prisma.admin.findUnique({
-    where: { id },
+    where: { 
+      id ,
+      isdeleted: false,
+    },
   });
   return admin;
 };
 
 const updateAdminData = async (id: string, data: any) => {
   const adminExists = await prisma.admin.findUniqueOrThrow({
-    where: { id },
+    where: { 
+      id ,
+      isdeleted: false,
+    },
+    
   });
   if (!adminExists) {
     throw new Error("Admin not found");
@@ -29,7 +37,10 @@ const updateAdminData = async (id: string, data: any) => {
   console.log(adminExists);
 
   const result = await prisma.admin.update({
-    where: { id },
+    where: {
+      id,
+      isdeleted: false,
+    },
     data,
   });
 
@@ -60,9 +71,21 @@ const deleteAdminById = async (id: string) => {
   return result;
 };
 
+const softdeleteAdminById = async (id: string) => {
+  await prisma.admin.findUniqueOrThrow({
+    where: { id },
+  });
+  const result = await prisma.admin.update({
+    where: { id },
+    data: { isdeleted: true },
+  });
+  return result;
+};
+
 export const adminService = {
   getAllAdmins,
   getAdminById,
   deleteAdminById,
+  softdeleteAdminById,
   updateAdminData,
 };
