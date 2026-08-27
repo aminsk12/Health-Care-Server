@@ -7,6 +7,7 @@ const createAdmin = async (data: any) => {
   
   const userData = {
     email: data.admin.email,
+    contactNumber: data.admin.contactNumber,
     password: hasPassword,
     role: 'ADMIN'
   };

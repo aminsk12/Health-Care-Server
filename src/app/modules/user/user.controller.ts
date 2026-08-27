@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { userService } from "./user.service";
+import sendResponse from "../../utils/sendResponse";
 
 const createAdmin = async (req: Request, res: Response) => {
   const data = req.body;
@@ -7,21 +8,20 @@ const createAdmin = async (req: Request, res: Response) => {
   // console.log("data", data);
   try {
     const result = await userService.createAdmin(data);
-    res.status(200).json({
-      success: true,
+    sendResponse(res, {
+      statusCode: 200,
+      success: "true",
       message: "Admin created successfully",
       data: result,
     });
   } catch (error) {
     res.status(500).json({
-      success: false,
+      success: "false",
       message: "Failed to create admin",
-        error: (error as Error).message,
+      error: error instanceof Error ? error.message : String(error),
     });
   }
 };
-
-
 
 export const userController = {
   createAdmin,
