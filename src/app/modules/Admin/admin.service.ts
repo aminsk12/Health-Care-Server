@@ -1,22 +1,40 @@
 import { prisma } from "../../../lib/prisma";
 
 const getAllAdmins = async (params: any) => {
-  const admins = await prisma.admin.findMany({
-    where: {
-      name: {
-        contains: params.searchTerm,
-        mode: "insensitive",
-      },
-      isdeleted: false,
-    },
-  });
-  return admins;
+  
+  const searchTerm = params.searchTerm?.trim();
+
+  const where = {
+    isdeleted: false,
+    ...(searchTerm && {
+      OR: [
+        {
+          name: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        },
+        {
+          email: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        },
+      ],
+    }),
+  };
+
+  const admins = await prisma.admin.findMany({ where });
+
+  const count = await prisma.admin.count({ where });
+
+  return { admins, count };
 };
 
 const getAdminById = async (id: string) => {
   const admin = await prisma.admin.findUnique({
-    where: { 
-      id ,
+    where: {
+      id,
       isdeleted: false,
     },
   });
@@ -25,11 +43,10 @@ const getAdminById = async (id: string) => {
 
 const updateAdminData = async (id: string, data: any) => {
   const adminExists = await prisma.admin.findUniqueOrThrow({
-    where: { 
-      id ,
+    where: {
+      id,
       isdeleted: false,
     },
-    
   });
   if (!adminExists) {
     throw new Error("Admin not found");

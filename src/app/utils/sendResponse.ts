@@ -7,9 +7,9 @@ const sendResponse = <T>(
     success: string;
     message: string;
     meta?: {
-      page: number;
-      limit: number;
-      total: number;
+      page?: number;
+      limit?: number;
+      total?: number;
     };
     data: T | undefined | null;
   },
