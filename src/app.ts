@@ -1,7 +1,7 @@
 import express, { type Application } from "express";
 import cors from "cors";
-import { userRouter } from "./app/modules/user/user.route";
-import { adminRoute } from "./app/modules/Admin/admin.route";
+import router from "./app/routes";
+
 
 
 const app: Application = express();
@@ -11,8 +11,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-app.use("/api/v1/user", userRouter);
-app.use("/api/v1/admin", adminRoute);
+app.use("/api/v1/", router);
+
 
 app.get("/", (req, res) => {
   res.send("Hello, World!");

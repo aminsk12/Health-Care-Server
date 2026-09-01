@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { adminService } from "./admin.service";
 import sendResponse from "../../utils/sendResponse";
+import status from "http-status";
 
 const getAllAdmins = async (req: Request, res: Response) => {
     console.log("QUERY", req.query);
@@ -9,7 +10,7 @@ const getAllAdmins = async (req: Request, res: Response) => {
   try {
     const result = await adminService.getAllAdmins( req.query);
     sendResponse(res, {
-      statusCode: 200,
+      statusCode: status.OK,
       success: "true",
       message: "Admins fetched successfully",
       meta: {
@@ -18,7 +19,7 @@ const getAllAdmins = async (req: Request, res: Response) => {
       },
       data: result.admins,
     });
-    
+
   } catch (err) {
     res.status(500).json({
       success: false,

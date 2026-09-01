@@ -16,4 +16,4 @@ router.delete("/:id", adminController.deleteAdminById);
 router.delete("/soft-delete/:id", adminController.softdeleteAdminById);
 
 
-export const adminRoute = router;
+export const adminRouter = router;
