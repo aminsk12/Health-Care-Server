@@ -1,3 +1,4 @@
+import type { Admin } from "../../../generated/prisma/browser";
 import { prisma } from "../../../lib/prisma";
 
 const getAllAdmins = async (params: any) => {
@@ -41,7 +42,7 @@ const getAdminById = async (id: string) => {
   return admin;
 };
 
-const updateAdminData = async (id: string, data: any) => {
+const updateAdminData = async (id: string, data: Partial<Admin>): Promise<Admin> => {
   const adminExists = await prisma.admin.findUniqueOrThrow({
     where: {
       id,
